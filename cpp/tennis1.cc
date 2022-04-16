@@ -1,58 +1,46 @@
 #include <string>
 
-const std::string tennis_score(int p1Score, int p2Score) {
-    std::string score = "";
-    int tempScore=0;
-    if (p1Score==p2Score)
+std::string get_player_score(int score_value)
+{
+    std::string score;
+    switch (score_value)
     {
-        switch (p1Score)
-        {
-            case 0:
-                    score = "Love-All";
-                break;
-            case 1:
-                    score = "Fifteen-All";
-                break;
-            case 2:
-                    score = "Thirty-All";
-                break;
-            default:
-                    score = "Deuce";
-                break;
-
-        }
+        case 0: score = "Love"; break;
+        case 1: score = "Fifteen"; break;
+        case 2: score = "Thirty"; break;
+        case 3: score = "Forty"; break;
     }
-    else if (p1Score>=4 || p2Score>=4)
+    return score;
+}
+
+const std::string tennis_score(int p1Score, int p2Score)
+{
+    std::string score = "";
+    if (p1Score == p2Score)
     {
-        int minusResult = p1Score-p2Score;
-        if (minusResult==1) score ="Advantage player1";
-        else if (minusResult ==-1) score ="Advantage player2";
-        else if (minusResult>=2) score = "Win for player1";
-        else score ="Win for player2";
+        if (p1Score > 2)
+            score = "Deuce";
+        else
+            score = get_player_score(p1Score) + "-All";
+    }
+    else if (p1Score >= 4 || p2Score >= 4)
+    {
+        int minusResult = p1Score - p2Score;
+        if (minusResult == 1)
+            score = "Advantage player1";
+        else if (minusResult == -1)
+            score = "Advantage player2";
+        else if (minusResult >= 2)
+            score = "Win for player1";
+        else
+            score = "Win for player2";
     }
     else
     {
-        for (int i=1; i<3; i++)
-        {
-            if (i==1) tempScore = p1Score;
-            else { score+="-"; tempScore = p2Score;}
-            switch(tempScore)
-            {
-                case 0:
-                    score+="Love";
-                    break;
-                case 1:
-                    score+="Fifteen";
-                    break;
-                case 2:
-                    score+="Thirty";
-                    break;
-                case 3:
-                    score+="Forty";
-                    break;
-            }
-        }
+        std::string score1 = get_player_score(p1Score);
+        std::string score2 = get_player_score(p2Score);
+        score              = score1 + "-" + score2;
     }
+
     return score;
-    
 }
